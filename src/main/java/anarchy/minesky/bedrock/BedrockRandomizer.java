@@ -36,7 +36,8 @@ public final class BedrockRandomizer extends JavaPlugin implements Listener {
         }
 
         final World world = event.getWorld();
-        if (world.getEnvironment() != World.Environment.NORMAL) {
+        final String worldName = world.getName();
+        if (!worldName.equals("world") && !worldName.equals("world_nether")) {
             return;
         }
 
