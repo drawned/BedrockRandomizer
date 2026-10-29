@@ -17,6 +17,7 @@ public final class BedrockRandomizer extends JavaPlugin implements Listener {
 
     private static final BlockData BEDROCK_DATA = Material.BEDROCK.createBlockData();
     private static final BlockData DEEPSLATE_DATA = Material.DEEPSLATE.createBlockData();
+    private static final BlockData NETHERRACK_DATA = Material.NETHERRACK.createBlockData();
 
     /** Per-column noise chance (Y offsets +1 … +4 from world min height). */
     private static final int[] NOISE_THRESHOLD = {80, 60, 35, 15};
@@ -41,6 +42,10 @@ public final class BedrockRandomizer extends JavaPlugin implements Listener {
             return;
         }
 
+        final BlockData filler = world.getEnvironment() == World.Environment.NETHER
+                ? NETHERRACK_DATA
+                : DEEPSLATE_DATA;
+
         final Chunk chunk = event.getChunk();
         final int minY = world.getMinHeight();
         final ThreadLocalRandom random = ThreadLocalRandom.current();
@@ -63,7 +68,7 @@ public final class BedrockRandomizer extends JavaPlugin implements Listener {
 
                     if (layer == 5) {
                         if (current == Material.BEDROCK) {
-                            block.setBlockData(DEEPSLATE_DATA, false);
+                            block.setBlockData(filler, false);
                         }
                         continue;
                     }
@@ -74,7 +79,7 @@ public final class BedrockRandomizer extends JavaPlugin implements Listener {
                             block.setBlockData(BEDROCK_DATA, false);
                         }
                     } else if (current == Material.BEDROCK) {
-                        block.setBlockData(DEEPSLATE_DATA, false);
+                        block.setBlockData(filler, false);
                     }
                 }
             }
